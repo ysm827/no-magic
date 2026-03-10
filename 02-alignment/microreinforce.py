@@ -8,6 +8,18 @@ into gradient updates, and why variance reduction matters.
 # This script implements it from scratch on a synthetic sequence generation task, then
 # demonstrates why baseline subtraction is essential for practical use.
 
+# === TRADEOFFS ===
+# + Minimal assumptions: works with any differentiable policy and any reward signal
+# + Unbiased gradient estimates (the expected gradient equals the true policy gradient)
+# + Foundation for all modern policy gradient methods (PPO, GRPO, RLHF)
+# - Extremely high variance without baseline subtraction (slow convergence)
+# - No credit assignment: entire trajectory gets the same reward signal
+# - Sample-inefficient: each trajectory is used once then discarded (on-policy)
+# WHEN TO USE: Simple RL problems, prototyping reward functions, or as a baseline
+#   before trying more complex algorithms (PPO, GRPO).
+# WHEN NOT TO: Production RL systems (use PPO for stability), long-horizon tasks
+#   (variance makes learning impractical), or when sample efficiency matters.
+
 from __future__ import annotations
 
 import math

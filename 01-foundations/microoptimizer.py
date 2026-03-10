@@ -6,6 +6,18 @@ loss landscapes, demonstrated head-to-head.
 # bigram models with SGD, Momentum, RMSProp, and Adam to show why adaptive methods dominate.
 # Extension: learning rate warmup + cosine decay (Loshchilov & Hutter, 2016).
 
+# === TRADEOFFS ===
+# + Adam converges faster than SGD on most tasks via adaptive per-parameter learning rates
+# + Momentum-based methods escape shallow local minima that trap vanilla SGD
+# + Learning rate schedules (warmup + decay) improve final convergence quality
+# - Adam uses 3x memory of SGD (stores m and v per parameter)
+# - Adaptive methods can generalize worse than well-tuned SGD on some tasks
+# - More hyperparameters to tune (beta1, beta2, epsilon, schedule shape)
+# WHEN TO USE: Default to Adam/AdamW for most deep learning tasks, especially
+#   transformers. Switch to SGD+momentum only if Adam overfits or memory is tight.
+# WHEN NOT TO: Extremely memory-constrained training, or convex optimization
+#   problems where SGD with a proper schedule converges optimally.
+
 from __future__ import annotations
 
 import math

@@ -6,6 +6,18 @@ search and a character-level MLP in pure Python.
 # Knowledge-Intensive NLP Tasks" (Lewis et al., 2020), BM25 scoring from Robertson
 # and Zaragoza (2009). Implementation rewritten from scratch for educational clarity.
 
+# === TRADEOFFS ===
+# + Grounds generation in retrieved evidence, reducing hallucination
+# + Knowledge base is updateable without retraining the model
+# + Separates knowledge storage from reasoning capability
+# - Retrieval quality bottlenecks generation quality (garbage in, garbage out)
+# - Increases latency: retrieval step adds overhead before generation
+# - Context window limits how much retrieved evidence the model can use
+# WHEN TO USE: Question answering over a knowledge base, enterprise search,
+#   or any task where factual accuracy and source attribution matter.
+# WHEN NOT TO: Creative writing, tasks with no external knowledge source,
+#   or when latency budget cannot accommodate a retrieval step.
+
 from __future__ import annotations
 
 import math

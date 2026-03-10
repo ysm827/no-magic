@@ -6,6 +6,18 @@ Q, K, V in tiles with an online softmax that never materializes the full N*N sco
 # with IO-Awareness" (2022). https://arxiv.org/abs/2205.14135
 # Also: Milakov & Gimelshein, "Online normalizer calculation for softmax" (2018).
 
+# === TRADEOFFS ===
+# + Exact attention output: mathematically identical to standard implementation
+# + O(N) memory instead of O(N^2) by never materializing the full score matrix
+# + IO-aware tiling exploits GPU SRAM bandwidth (10-100x faster than HBM)
+# - Implementation complexity: online softmax with running max and denominator
+# - Block size tuning is hardware-dependent (SRAM size varies across GPUs)
+# - Custom CUDA kernel required for real speedups (Python tiling is pedagogical only)
+# WHEN TO USE: Any transformer model where attention is the memory or speed
+#   bottleneck. Standard in production (used by default in PyTorch 2.0+).
+# WHEN NOT TO: When sequence lengths are short enough that O(N^2) memory fits
+#   comfortably, or when non-standard attention patterns prevent tiling.
+
 from __future__ import annotations
 
 import math

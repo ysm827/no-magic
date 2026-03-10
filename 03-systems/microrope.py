@@ -6,6 +6,18 @@ replaced learned embeddings in every modern LLM.
 # Vaswani et al., "Attention Is All You Need" (2017) for sinusoidal baselines.
 # All modern open-weight LLMs (LLaMA, Mistral, Gemma, Qwen, DeepSeek) use RoPE or variants.
 
+# === TRADEOFFS ===
+# + Relative position encoding: attention score depends on distance, not absolute position
+# + Extrapolates to longer sequences than seen during training (with appropriate scaling)
+# + No learned parameters: purely analytical formulation (zero extra memory)
+# - Requires even head dimensions (pairs of features rotated together)
+# - Performance degrades at extreme extrapolation lengths without NTK/YaRN scaling
+# - Rotation computation adds overhead per attention head per layer
+# WHEN TO USE: Any transformer-based language model. RoPE is the de facto standard
+#   for modern open-weight LLMs (LLaMA, Mistral, Gemma, DeepSeek).
+# WHEN NOT TO: Non-sequential data where relative position is meaningless, or
+#   encoder-only models where learned absolute embeddings work equally well.
+
 from __future__ import annotations
 
 import math

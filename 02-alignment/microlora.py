@@ -7,6 +7,18 @@ matrices — proving that weight updates live in a low-dimensional subspace.
 # Architecture reuses the microgpt pattern (Radford et al., 2019) with pedagogical
 # simplifications: RMSNorm, ReLU, no biases. LoRA adapters applied to Q and V projections.
 
+# === TRADEOFFS ===
+# + Trains <1% of parameters while matching full fine-tuning quality
+# + Multiple LoRA adapters can share a single frozen base model
+# + No inference latency overhead: adapter weights merge into base at deployment
+# - Low rank limits expressiveness for tasks requiring large weight changes
+# - Choosing which layers to adapt requires experimentation
+# - Cannot change the model's fundamental capabilities, only steer behavior
+# WHEN TO USE: Fine-tuning large pretrained models for specific tasks when
+#   compute or memory is limited. Standard for LLM customization.
+# WHEN NOT TO: When the task requires fundamentally new capabilities not present
+#   in the base model, or when full fine-tuning is affordable and data is abundant.
+
 from __future__ import annotations
 
 import math

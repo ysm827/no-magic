@@ -7,6 +7,18 @@ that brought LLM fine-tuning to consumer GPUs.
 # Combines microquant.py's quantization with microlora.py's low-rank adaptation.
 # Architecture: microgpt pattern (Radford et al., 2019) with pedagogical simplifications.
 
+# === TRADEOFFS ===
+# + Enables fine-tuning of large models on consumer GPUs (4-bit base + FP adapters)
+# + NF4 quantization is information-theoretically optimal for normal distributions
+# + Combines memory savings of quantization with parameter efficiency of LoRA
+# - Double quantization adds dequantization overhead at every forward pass
+# - Quantization error accumulates through layers (deeper models are more affected)
+# - Training is slower than standard LoRA due to repeated dequantization
+# WHEN TO USE: Fine-tuning models that exceed available GPU memory at full
+#   precision. Enables 65B+ parameter fine-tuning on a single 48GB GPU.
+# WHEN NOT TO: When full-precision LoRA fits in memory (unnecessary accuracy loss),
+#   or when training speed is more important than memory savings.
+
 from __future__ import annotations
 
 import math

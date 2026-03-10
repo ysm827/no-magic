@@ -7,6 +7,18 @@ adjacent token pairs, then encodes new text by replaying those merges in priorit
 # GPT-2's byte-level BPE variant (Radford et al., 2019) starts from raw bytes
 # rather than characters -- that's the version implemented here.
 
+# === TRADEOFFS ===
+# + Data-driven vocabulary: adapts to any language or domain without linguistic rules
+# + Compresses common patterns into single tokens, reducing sequence lengths
+# + Byte-level fallback guarantees encoding of any input (no unknown tokens)
+# - Merge order is corpus-dependent: different data yields different tokenizations
+# - Encoding is O(n * vocab_size) per merge step without optimized data structures
+# - Subword boundaries rarely align with morpheme boundaries (linguistic blindness)
+# WHEN TO USE: Preprocessing text for any neural language model. BPE is the
+#   standard tokenizer for GPT-family models.
+# WHEN NOT TO: Character-level tasks where token boundaries matter (e.g., spelling),
+#   or languages where word segmentation is well-solved by existing tools.
+
 from __future__ import annotations
 
 import os

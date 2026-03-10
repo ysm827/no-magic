@@ -8,6 +8,18 @@ equilibrium is so fragile.
 # from deep convolutional networks on images to ~500-param MLPs on point clouds.
 # Completes the "generative trilogy": diffusion denoises, VAE decodes from latent, GAN fools a critic.
 
+# === TRADEOFFS ===
+# + Fast single-pass generation at inference time (no iterative denoising)
+# + Produces sharp, high-fidelity samples when training succeeds
+# + Implicit density model: no assumption about data distribution shape
+# - Training instability: mode collapse, vanishing gradients, oscillation
+# - No coverage guarantee: may ignore entire modes of the data distribution
+# - No latent-space encoder: cannot map data back to latent codes without extensions
+# WHEN TO USE: Image synthesis, style transfer, or super-resolution where sharp
+#   outputs matter and you can invest in training stabilization.
+# WHEN NOT TO: When training reliability is critical, when you need a latent
+#   encoder (use VAE), or when sample diversity matters more than sharpness (use diffusion).
+
 from __future__ import annotations
 
 import math

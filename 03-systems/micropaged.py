@@ -7,6 +7,18 @@ and the OS principles behind scalable LLM serving.
 # Also: Yu et al., "Orca: A Distributed Serving System for Transformer-Based Generative
 # Models" (2022) for continuous batching.
 
+# === TRADEOFFS ===
+# + Near-zero memory waste: allocates KV-cache pages on demand, not up front
+# + Enables efficient memory sharing across requests (copy-on-write for prompts)
+# + Supports dynamic batch scheduling (continuous batching / Orca-style iteration)
+# - Page table management adds per-token overhead (indirection cost)
+# - Fragmentation still possible at the page level (internal fragmentation)
+# - Requires tight integration with the attention kernel (non-trivial implementation)
+# WHEN TO USE: Multi-request LLM serving where memory utilization and throughput
+#   matter. Standard in production serving frameworks (vLLM, TensorRT-LLM).
+# WHEN NOT TO: Single-request inference, or when sequences have uniform known
+#   length (pre-allocation is simpler and has zero overhead).
+
 from __future__ import annotations
 
 import math

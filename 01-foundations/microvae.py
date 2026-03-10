@@ -7,6 +7,18 @@ trick demystified, in pure Python with zero dependencies.
 # The reparameterization trick (z = μ + σ * ε) is the core contribution that makes
 # VAEs trainable — before this, sampling operations blocked gradient flow.
 
+# === TRADEOFFS ===
+# + Learned latent space enables interpolation and structured generation
+# + Principled objective (ELBO) with clear reconstruction vs. regularization tradeoff
+# + Encoder provides inference: map data to latent codes (unlike GANs)
+# - Samples tend to be blurry due to Gaussian decoder assumption
+# - KL term can cause posterior collapse (latent codes ignored by the decoder)
+# - Balancing reconstruction loss vs. KL divergence requires careful tuning
+# WHEN TO USE: Learning compressed representations, data interpolation, anomaly
+#   detection, or any task where a structured latent space is the goal.
+# WHEN NOT TO: When sample sharpness is critical (use GANs or diffusion), or
+#   when you only need generation without an encoder (diffusion is simpler).
+
 from __future__ import annotations
 
 import math

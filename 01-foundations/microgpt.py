@@ -7,6 +7,18 @@ character in a sequence using nothing but matrix multiplication, attention, and 
 # no bias terms. Algorithmic flow inspired by Karpathy's microgpt.py but rewritten from
 # scratch with comprehensive commenting for educational clarity.
 
+# === TRADEOFFS ===
+# + Captures long-range dependencies via self-attention (O(n^2) but parallelizable)
+# + Scales predictably: more data + more params = better performance (scaling laws)
+# + Autoregressive generation is simple: just keep predicting the next token
+# - O(n^2) memory in sequence length limits context windows
+# - Requires massive datasets to generalize; small data leads to memorization
+# - No built-in uncertainty: generates confidently even when wrong
+# WHEN TO USE: Text generation, code completion, any sequential prediction task
+#   where you have sufficient training data and compute.
+# WHEN NOT TO: Real-time streaming with strict latency constraints, or tasks
+#   where bidirectional context is essential (use BERT-style instead).
+
 from __future__ import annotations
 
 import math

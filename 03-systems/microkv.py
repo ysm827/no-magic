@@ -7,6 +7,18 @@ eliminates that redundancy by memoizing key/value projections across the sequenc
 # with PagedAttention" (2023) for paged allocation. Architecture follows the microgpt
 # pattern (Radford et al., 2019) with pedagogical simplifications.
 
+# === TRADEOFFS ===
+# + Eliminates redundant key/value recomputation during autoregressive generation
+# + Linear speedup: each generation step processes only the new token
+# + Paged allocation reduces memory fragmentation for variable-length sequences
+# - Memory grows linearly with sequence length (long contexts exhaust GPU memory)
+# - Cache management adds implementation complexity (especially for batched serving)
+# - No benefit during training (full sequence is processed in parallel)
+# WHEN TO USE: Autoregressive inference with any transformer-based language model.
+#   KV-caching is mandatory for practical LLM serving.
+# WHEN NOT TO: Training (forward pass is already parallel), or encoder-only models
+#   (BERT-style) where all tokens are processed simultaneously.
+
 from __future__ import annotations
 
 import math

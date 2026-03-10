@@ -7,6 +7,18 @@ maps that powered computer vision before transformers.
 # learned kernels become edge detectors and how pooling provides translation invariance.
 # Architectural simplifications: single conv layer, 8x8 images, scalar (not tensor) autograd.
 
+# === TRADEOFFS ===
+# + Translation invariance: detects features regardless of position in the input
+# + Parameter-efficient: shared kernels mean far fewer weights than fully connected layers
+# + Hierarchical feature extraction: stacking layers captures increasing abstraction
+# - Fixed receptive field per layer limits global context without deep stacking
+# - Struggles with variable-length sequences without architectural changes
+# - Pooling discards spatial precision (problematic for dense prediction tasks)
+# WHEN TO USE: Image classification, object detection, or any grid-structured data
+#   where local spatial patterns are the primary signal.
+# WHEN NOT TO: Sequential data with long-range dependencies (use attention or RNNs),
+#   or graph-structured data where adjacency is irregular.
+
 from __future__ import annotations
 
 import math

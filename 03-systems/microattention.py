@@ -7,6 +7,18 @@ window trade off memory, compute, and representational power on the same input.
 # Ainslie et al., "GQA: Training Generalized Multi-Query Transformer Models from
 # Multi-Head Checkpoints" (2023). Beltagy et al., "Longformer" (2020) for sliding window.
 
+# === TRADEOFFS ===
+# + MHA: maximum representational power with independent head projections
+# + GQA: reduces KV-cache memory by sharing key/value heads across query groups
+# + MQA: minimal KV-cache (single KV head) for maximum inference throughput
+# - MHA: KV-cache scales linearly with head count (memory bottleneck at long contexts)
+# - MQA: quality degrades from extreme KV sharing (fewer distinct attention patterns)
+# - Sliding window: loses global context beyond the window boundary
+# WHEN TO USE: MHA for training quality, GQA for balanced serving, MQA for
+#   extreme throughput, sliding window for very long sequences.
+# WHEN NOT TO: MQA when quality is non-negotiable, sliding window when global
+#   context is required, MHA when KV-cache memory is the deployment bottleneck.
+
 from __future__ import annotations
 
 import math

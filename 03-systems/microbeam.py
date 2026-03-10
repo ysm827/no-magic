@@ -7,6 +7,18 @@ argmax to speculative decoding with a draft-verify two-model pipeline.
 # Also: Holtzman et al., "The Curious Case of Neural Text Degeneration" (2019).
 # https://arxiv.org/abs/1904.09751 (nucleus/top-p sampling)
 
+# === TRADEOFFS ===
+# + Beam search finds higher-probability sequences than greedy decoding
+# + Nucleus sampling produces diverse, natural-sounding text
+# + Speculative decoding accelerates inference without changing output distribution
+# - Beam search produces repetitive, generic text (the high-probability trap)
+# - Sampling introduces randomness: non-reproducible outputs without fixed seeds
+# - Speculative decoding requires a well-matched draft model (poor match = no speedup)
+# WHEN TO USE: Beam search for structured output (translation, code). Sampling for
+#   creative text. Speculative decoding for latency-critical serving.
+# WHEN NOT TO: Beam search for open-ended generation (use sampling). Speculative
+#   decoding when no suitable draft model exists or acceptance rate is low.
+
 from __future__ import annotations
 
 import math

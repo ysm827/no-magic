@@ -7,6 +7,18 @@ weight quantization, demonstrated end-to-end: train, quantize, dequantize, compa
 # Also: Frantar et al., "GPTQ: Accurate Post-Training Quantization for Generative
 # Pre-trained Transformers" (2022). https://arxiv.org/abs/2210.17323
 
+# === TRADEOFFS ===
+# + 2-4x model compression with minimal accuracy loss (INT8)
+# + Faster inference on hardware with integer math units
+# + Reduces memory bandwidth bottleneck (the real constraint in LLM serving)
+# - Accuracy degrades at aggressive quantization (INT4 and below)
+# - Calibration dataset required for post-training quantization
+# - Some architectures quantize poorly (sensitive layers need mixed precision)
+# WHEN TO USE: Deploying trained models to production, edge devices, or
+#   memory-constrained environments where inference speed matters.
+# WHEN NOT TO: During training (gradients need full precision), or when
+#   accuracy requirements leave zero margin for quantization error.
+
 from __future__ import annotations
 
 import math

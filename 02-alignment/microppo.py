@@ -9,6 +9,18 @@ then optimize the policy with Proximal Policy Optimization -- all in one file, f
 # Architecture reuses the microgpt pattern (Radford et al., 2019) with a smaller model
 # (n_embd=8) to accommodate the three-model RLHF pipeline within runtime constraints.
 
+# === TRADEOFFS ===
+# + Clipped objective prevents catastrophic policy updates (stable RL training)
+# + Handles arbitrary reward functions (more flexible than DPO)
+# + Online exploration: policy improves through its own generated experience
+# - Three models required (policy, value, reward) — high memory and compute cost
+# - Sensitive to hyperparameters: clip range, KL penalty, value loss coefficient
+# - Reward hacking: policy finds shortcuts that maximize reward without true alignment
+# WHEN TO USE: Aligning models with complex, non-decomposable reward signals,
+#   or when online exploration is needed to discover optimal behavior.
+# WHEN NOT TO: When preference pairs are available and sufficient (use DPO), or
+#   when compute budget cannot support three concurrent models.
+
 from __future__ import annotations
 
 import math
