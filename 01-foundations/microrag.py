@@ -109,16 +109,16 @@ def generate_knowledge_base() -> tuple[list[str], list[tuple[str, str]]]:
     for i in range(80):
         # Recombine facts with slight variations to create more documents
         if i % 4 == 0:
-            city, country, pop, river = cities[i % len(cities)]
+            city, country, pop, river = cities[(i // 4) % len(cities)]
             doc = f"The population of {city} is about {pop}. It is in {country}."
         elif i % 4 == 1:
             mountain, country, height = mountains[i % len(mountains)]
             doc = f"{mountain} stands at {height} in {country}."
         elif i % 4 == 2:
-            city, country, pop, river = cities[i % len(cities)]
+            city, country, pop, river = cities[(i // 4) % len(cities)]
             doc = f"The {river} river is a major waterway in {city}, {country}."
         else:
-            city, country, pop, river = cities[i % len(cities)]
+            city, country, pop, river = cities[(i // 4) % len(cities)]
             doc = f"{city} is a major city with population {pop}."
         documents.append(doc.lower())
 
