@@ -7,6 +7,18 @@ How normalizing activations within each mini-batch stabilizes training and enabl
 # covariate shift"). Normalizing per-layer activations to zero mean and unit variance
 # removes this coupling, allowing higher learning rates and faster convergence.
 
+# === TRADEOFFS ===
+# + Enables higher learning rates by stabilizing activation distributions
+# + Acts as implicit regularization (batch noise prevents overfitting)
+# + Reduces sensitivity to weight initialization
+# - Behavior differs between training and inference (running stats vs. batch stats)
+# - Breaks down with small batch sizes (noisy statistics)
+# - Introduces cross-sample dependency within a batch (problematic for some tasks)
+# WHEN TO USE: Deep CNNs and MLPs where training instability or vanishing
+#   gradients are limiting depth. Standard for computer vision architectures.
+# WHEN NOT TO: Sequence models (use LayerNorm), batch size < 8, or online
+#   learning where single-sample updates are required.
+
 from __future__ import annotations
 
 import math

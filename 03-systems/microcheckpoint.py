@@ -16,6 +16,18 @@ by recomputing activations during the backward pass.
 # routinely when training large transformers (GPT-3, LLaMA, Gemini) where GPU memory
 # is the binding constraint, not compute time.
 
+# === TRADEOFFS ===
+# + Reduces activation memory from O(n) to O(sqrt(n)) layers
+# + Enables training deeper models on fixed hardware budgets
+# + Drop-in compatible: no changes to model architecture or optimizer
+# - Approximately doubles training compute (one extra forward pass per segment)
+# - Checkpoint placement requires tuning (sqrt(n) spacing is optimal for uniform cost)
+# - No benefit for inference (activations are not stored during forward-only passes)
+# WHEN TO USE: Training deep models where GPU memory is the binding constraint,
+#   not training time. Standard for large transformer training (GPT-3, LLaMA).
+# WHEN NOT TO: Shallow models where activation memory is already small, or when
+#   training throughput is the bottleneck (the 2x compute cost is unacceptable).
+
 from __future__ import annotations
 
 import math

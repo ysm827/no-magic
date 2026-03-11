@@ -8,6 +8,18 @@ function entirely.
 # Architecture reuses the microgpt pattern (Radford et al., 2019) with smaller dimensions
 # (n_embd=8) to keep the generate-then-score loop within runtime constraints.
 
+# === TRADEOFFS ===
+# + No value function needed: eliminates an entire model from the RLHF pipeline
+# + Group normalization provides a natural baseline without extra parameters
+# + Simpler implementation than PPO with comparable alignment quality
+# - Requires generating multiple completions per prompt (higher inference cost)
+# - Group size is a sensitive hyperparameter: too small = high variance, too large = slow
+# - Less sample-efficient than PPO (needs more generations to reduce variance)
+# WHEN TO USE: RLHF alignment when you want to avoid training a separate value
+#   network and can afford to generate multiple completions per prompt.
+# WHEN NOT TO: When inference budget is tight (PPO needs fewer generations), or
+#   when you need fine-grained per-token credit assignment (use PPO's value function).
+
 from __future__ import annotations
 
 import math

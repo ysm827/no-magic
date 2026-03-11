@@ -8,6 +8,18 @@ generate new samples from pure randomness.
 # This 2D implementation preserves the exact DDPM algorithm used in Stable Diffusion,
 # scaled down from billion-param U-Nets on images to ~1000-param MLPs on point clouds.
 
+# === TRADEOFFS ===
+# + Generates high-quality, diverse samples (mode coverage superior to GANs)
+# + Stable training: no adversarial dynamics or mode collapse
+# + Mathematically grounded: ELBO objective with clear convergence criteria
+# - Slow inference: requires hundreds of sequential denoising steps
+# - High compute cost per sample compared to single-pass generators (GANs, VAEs)
+# - No meaningful latent space for interpolation without additional engineering
+# WHEN TO USE: Image/audio/video generation where sample quality and diversity
+#   matter more than generation speed.
+# WHEN NOT TO: Real-time generation, interactive applications requiring instant
+#   output, or tasks where a compact latent space is needed (use VAE instead).
+
 from __future__ import annotations
 
 import math

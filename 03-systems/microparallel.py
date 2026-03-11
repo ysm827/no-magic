@@ -7,6 +7,18 @@ parallelism, and communication costs, demonstrated end-to-end on a 4-layer MLP.
 # Huang et al., "GPipe: Efficient Training of Giant Neural Networks using Pipeline
 # Parallelism" (2019). https://arxiv.org/abs/1811.06965
 
+# === TRADEOFFS ===
+# + Tensor parallelism: splits individual layers across devices (low latency)
+# + Pipeline parallelism: splits layers across stages (lower communication volume)
+# + Combining both scales to thousands of devices (Megatron-style 3D parallelism)
+# - Tensor parallelism requires all-reduce after every layer (communication-bound)
+# - Pipeline parallelism has bubble overhead (devices idle during fill/drain)
+# - Implementation complexity: partitioning, communication, and synchronization code
+# WHEN TO USE: Training or serving models that exceed single-device memory.
+#   Required for any model above ~10B parameters.
+# WHEN NOT TO: Models that fit on a single device (parallelism overhead exceeds
+#   benefit), or when network bandwidth between devices is severely limited.
+
 from __future__ import annotations
 
 import math

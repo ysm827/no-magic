@@ -7,6 +7,18 @@ and early stopping as complementary strategies.
 # no single neuron can memorize patterns alone. This forces the network to distribute
 # knowledge across many neurons, producing a model that generalizes rather than memorizes.
 
+# === TRADEOFFS ===
+# + Prevents co-adaptation: forces distributed representations across neurons
+# + Approximates ensemble of exponentially many sub-networks
+# + Zero additional parameters: regularization via training-time noise
+# - Increases training time (effectively training on partial network each step)
+# - Requires scaling at inference time (or inverted dropout during training)
+# - Interacts unpredictably with batch normalization (both modify activations)
+# WHEN TO USE: When your model has excess capacity relative to data size and is
+#   overfitting on training data. Standard for fully connected and attention layers.
+# WHEN NOT TO: When the model is underfitting (dropout will make it worse), or
+#   in convolutional layers where spatial dropout is more appropriate.
+
 from __future__ import annotations
 
 import math

@@ -8,6 +8,18 @@ masked tokens, and why encoders complement decoders.
 # difference: no causal mask. Every token attends to every other token, enabling the model
 # to use BOTH left and right context when predicting masked positions.
 
+# === TRADEOFFS ===
+# + Bidirectional context lets every token attend to both left and right neighbors
+# + Excels at classification, NER, and other understanding tasks (not generation)
+# + Pre-train once, fine-tune cheaply on many downstream tasks
+# - Cannot generate text autoregressively (no causal structure)
+# - Masked-token training is sample-inefficient (only ~15-25% of tokens contribute loss)
+# - Fixed context window with no streaming capability
+# WHEN TO USE: Text classification, named entity recognition, sentence similarity,
+#   and any task where understanding matters more than generation.
+# WHEN NOT TO: Open-ended text generation, dialogue systems, or any task
+#   requiring autoregressive output (use GPT-style decoder instead).
+
 from __future__ import annotations
 
 import math

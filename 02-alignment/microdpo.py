@@ -8,6 +8,18 @@ on preference pairs.
 # Architecture reuses the microgpt pattern (Radford et al., 2019) with pedagogical
 # simplifications: RMSNorm, ReLU, no biases.
 
+# === TRADEOFFS ===
+# + No reward model needed: directly optimizes policy from preference pairs
+# + Stable training: standard cross-entropy loss, no RL instability
+# + Simpler pipeline than PPO (one model instead of three)
+# - Requires high-quality preference data (garbage preferences = garbage alignment)
+# - Less flexible than RL: cannot optimize arbitrary reward functions
+# - Beta hyperparameter sensitivity: too low = no effect, too high = mode collapse
+# WHEN TO USE: Aligning language models when you have preference pairs and want
+#   a simpler, more stable alternative to full RLHF.
+# WHEN NOT TO: When you need to optimize a complex reward function, when preference
+#   data is noisy or contradictory, or when online exploration is required.
+
 from __future__ import annotations
 
 import math

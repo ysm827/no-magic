@@ -7,6 +7,18 @@ gating was the breakthrough that made RNNs actually work.
 # Statistical Machine Translation" (2014). This implementation demonstrates both side-by-side
 # on the same character-level language modeling task to show why gating matters.
 
+# === TRADEOFFS ===
+# + Constant memory per step: processes arbitrarily long sequences in O(1) space
+# + Gating (GRU/LSTM) solves vanishing gradients for moderate-length dependencies
+# + Natural fit for streaming/online data where inputs arrive one at a time
+# - Sequential processing prevents parallelization across time steps
+# - Practically limited context: gradients still decay over hundreds of steps
+# - Outperformed by transformers on most benchmarks when parallel compute is available
+# WHEN TO USE: Streaming/real-time sequence tasks, resource-constrained devices,
+#   or when sequence lengths are moderate and parallelism is unavailable.
+# WHEN NOT TO: Tasks requiring long-range dependencies (>100 steps), or when
+#   parallel hardware is available (transformers will be faster and more accurate).
+
 from __future__ import annotations
 
 import math

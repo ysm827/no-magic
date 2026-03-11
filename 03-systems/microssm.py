@@ -8,6 +8,18 @@ through selective state transitions.
 # SSMs content-aware. Trained on character-level name generation for direct comparison
 # with microgpt.py (attention-based) and micrornn.py (recurrence-based).
 
+# === TRADEOFFS ===
+# + Linear-time sequence processing: O(L) vs. attention's O(L^2)
+# + Constant memory per step during inference (like RNNs, unlike KV-cache growth)
+# + Selective mechanism makes state transitions input-dependent (content-aware)
+# - Less expressive than full attention for tasks requiring arbitrary token-pair interaction
+# - Parallel training requires careful scan implementations (hardware-specific optimization)
+# - Smaller ecosystem: fewer pretrained models and less tooling than transformers
+# WHEN TO USE: Very long sequences (>8K tokens) where attention's quadratic cost is
+#   prohibitive, or streaming applications with strict memory budgets.
+# WHEN NOT TO: Tasks requiring dense token-pair interactions (retrieval, copying), or
+#   when leveraging the transformer pretrained model ecosystem is more practical.
+
 from __future__ import annotations
 
 import math

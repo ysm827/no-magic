@@ -9,6 +9,18 @@ specialist MLPs, scaling model capacity without proportionally scaling compute.
 # Architecture reuses the microgpt embedding/LM-head pattern (Radford et al., 2019) with
 # the transformer block replaced by a routed MoE layer.
 
+# === TRADEOFFS ===
+# + Scales model capacity without proportionally scaling compute (sparse activation)
+# + Specialized experts can develop domain-specific knowledge
+# + Compatible with standard transformer architectures (drop-in MLP replacement)
+# - Load balancing is hard: experts tend to collapse without auxiliary losses
+# - Routing decisions add latency and complicate batched inference
+# - Total parameter count (and memory) scales with expert count even if compute doesn't
+# WHEN TO USE: Scaling language models beyond dense compute budgets, or when
+#   the task naturally decomposes into subtasks that benefit from specialization.
+# WHEN NOT TO: Small-scale models where dense layers are sufficient, or
+#   latency-sensitive serving where routing overhead is unacceptable.
+
 from __future__ import annotations
 
 import math

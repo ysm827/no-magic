@@ -7,6 +7,18 @@ using only character n-grams and contrastive loss.
 # reflects semantic similarity. Inspired by SimCLR and sentence-transformers, but
 # simplified to a linear projection without the deep network machinery.
 
+# === TRADEOFFS ===
+# + Dense vectors enable similarity search via cosine distance (fast at scale with ANN)
+# + Contrastive learning needs only pair relationships, not explicit labels
+# + Embeddings transfer across tasks: train once, use for search, clustering, classification
+# - Quality depends heavily on training data distribution and pair construction
+# - No interpretability: individual dimensions have no human-readable meaning
+# - Cold-start problem: unseen items have no embedding without re-training or inference
+# WHEN TO USE: Semantic search, recommendation systems, clustering, or any task
+#   requiring a distance metric over discrete objects.
+# WHEN NOT TO: Tasks requiring interpretable features, or domains where exact
+#   keyword matching outperforms semantic similarity (e.g., code search by symbol name).
+
 from __future__ import annotations
 
 import math

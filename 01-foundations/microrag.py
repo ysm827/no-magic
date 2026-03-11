@@ -6,6 +6,18 @@ search and a character-level MLP in pure Python.
 # Knowledge-Intensive NLP Tasks" (Lewis et al., 2020), BM25 scoring from Robertson
 # and Zaragoza (2009). Implementation rewritten from scratch for educational clarity.
 
+# === TRADEOFFS ===
+# + Grounds generation in retrieved evidence, reducing hallucination
+# + Knowledge base is updateable without retraining the model
+# + Separates knowledge storage from reasoning capability
+# - Retrieval quality bottlenecks generation quality (garbage in, garbage out)
+# - Increases latency: retrieval step adds overhead before generation
+# - Context window limits how much retrieved evidence the model can use
+# WHEN TO USE: Question answering over a knowledge base, enterprise search,
+#   or any task where factual accuracy and source attribution matter.
+# WHEN NOT TO: Creative writing, tasks with no external knowledge source,
+#   or when latency budget cannot accommodate a retrieval step.
+
 from __future__ import annotations
 
 import math
@@ -97,16 +109,16 @@ def generate_knowledge_base() -> tuple[list[str], list[tuple[str, str]]]:
     for i in range(80):
         # Recombine facts with slight variations to create more documents
         if i % 4 == 0:
-            city, country, pop, river = cities[i % len(cities)]
+            city, country, pop, river = cities[(i // 4) % len(cities)]
             doc = f"The population of {city} is about {pop}. It is in {country}."
         elif i % 4 == 1:
             mountain, country, height = mountains[i % len(mountains)]
             doc = f"{mountain} stands at {height} in {country}."
         elif i % 4 == 2:
-            city, country, pop, river = cities[i % len(cities)]
+            city, country, pop, river = cities[(i // 4) % len(cities)]
             doc = f"The {river} river is a major waterway in {city}, {country}."
         else:
-            city, country, pop, river = cities[i % len(cities)]
+            city, country, pop, river = cities[(i // 4) % len(cities)]
             doc = f"{city} is a major city with population {pop}."
         documents.append(doc.lower())
 
