@@ -4,7 +4,8 @@
 
 ![Python 3.10+](https://img.shields.io/badge/python-3.10%2B-blue?style=flat-square&logo=python&logoColor=white)
 ![License: MIT](https://img.shields.io/github/license/Mathews-Tom/no-magic?style=flat-square)
-![Algorithms](https://img.shields.io/badge/algorithms-30-orange?style=flat-square)
+![Algorithms](https://img.shields.io/badge/algorithms-41-orange?style=flat-square)
+![Version](https://img.shields.io/badge/version-v2.0.0-blue?style=flat-square)
 ![Zero Dependencies](https://img.shields.io/badge/dependencies-zero-brightgreen?style=flat-square)
 ![PRs Welcome](https://img.shields.io/badge/PRs-welcome-brightgreen?style=flat-square)
 ![GitHub stars](https://img.shields.io/github/stars/Mathews-Tom/no-magic?style=flat-square)
@@ -28,120 +29,185 @@ Every script in this repository is an **executable proof** that these algorithms
 
 ## See It In Action
 
+<details open>
+<summary><h3>01 — Foundations (14 scripts)</h3></summary>
 <table>
 <tr>
-<td align="center"><b>Attention Mechanism</b><br/>
-<img src="videos/previews/microattention.gif" width="280"/><br/>
-<sub>Q·K<sup>T</sup> → softmax → weighted V</sub></td>
-<td align="center"><b>Autoregressive GPT</b><br/>
+<td align="center"><a href="01-foundations/microgpt.py"><b>Autoregressive GPT</b></a><br/>
 <img src="videos/previews/microgpt.gif" width="280"/><br/>
 <sub>Token-by-token generation</sub></td>
-<td align="center"><b>LoRA Fine-tuning</b><br/>
-<img src="videos/previews/microlora.gif" width="280"/><br/>
-<sub>Low-rank weight injection</sub></td>
+<td align="center"><a href="01-foundations/micrornn.py"><b>RNN vs GRU</b></a><br/>
+<img src="videos/previews/micrornn.gif" width="280"/><br/>
+<sub>Vanishing gradients and gating</sub></td>
+<td align="center"><a href="01-foundations/microlstm.py"><b>LSTM</b></a><br/>
+<img src="videos/previews/microlstm.gif" width="280"/><br/>
+<sub>4-gate memory highway</sub></td>
 </tr>
 <tr>
-<td align="center"><b>Word Embeddings</b><br/>
+<td align="center"><a href="01-foundations/microtokenizer.py"><b>BPE Tokenizer</b></a><br/>
+<img src="videos/previews/microtokenizer.gif" width="280"/><br/>
+<sub>Iterative pair merging → vocabulary</sub></td>
+<td align="center"><a href="01-foundations/microembedding.py"><b>Word Embeddings</b></a><br/>
 <img src="videos/previews/microembedding.gif" width="280"/><br/>
 <sub>Contrastive learning → semantic clusters</sub></td>
-<td align="center"><b>DPO Alignment</b><br/>
-<img src="videos/previews/microdpo.gif" width="280"/><br/>
-<sub>Preferred vs. rejected → policy update</sub></td>
-<td align="center"><b>RAG Pipeline</b><br/>
+<td align="center"><a href="01-foundations/microrag.py"><b>RAG Pipeline</b></a><br/>
 <img src="videos/previews/microrag.gif" width="280"/><br/>
 <sub>Retrieve → augment → generate</sub></td>
 </tr>
 <tr>
-<td align="center"><b>Flash Attention</b><br/>
-<img src="videos/previews/microflash.gif" width="280"/><br/>
-<sub>Tiled O(N) memory computation</sub></td>
-<td align="center"><b>Quantization</b><br/>
-<img src="videos/previews/microquant.gif" width="280"/><br/>
-<sub>Float32 → Int8 = 4x compression</sub></td>
-<td align="center"><b>Mixture of Experts</b><br/>
-<img src="videos/previews/micromoe.gif" width="280"/><br/>
-<sub>Sparse routing to specialist MLPs</sub></td>
-</tr>
-<tr>
-<td align="center"><b>BPE Tokenizer</b><br/>
-<img src="videos/previews/microtokenizer.gif" width="280"/><br/>
-<sub>Iterative pair merging → vocabulary</sub></td>
-<td align="center"><b>BERT</b><br/>
+<td align="center"><a href="01-foundations/microbert.py"><b>BERT</b></a><br/>
 <img src="videos/previews/microbert.gif" width="280"/><br/>
 <sub>Bidirectional attention + [MASK] prediction</sub></td>
-<td align="center"><b>KV-Cache</b><br/>
-<img src="videos/previews/microkv.gif" width="280"/><br/>
-<sub>Memoize keys/values — stop recomputing</sub></td>
-</tr>
-<tr>
-<td align="center"><b>Beam Search</b><br/>
-<img src="videos/previews/microbeam.gif" width="280"/><br/>
-<sub>Tree search with top-k pruning</sub></td>
-<td align="center"><b>RoPE</b><br/>
-<img src="videos/previews/microrope.gif" width="280"/><br/>
-<sub>Position via rotation matrices</sub></td>
-<td align="center"><b>PPO (RLHF)</b><br/>
-<img src="videos/previews/microppo.gif" width="280"/><br/>
-<sub>Clipped policy gradient for alignment</sub></td>
-</tr>
-<tr>
-<td align="center"><b>State Space Models</b><br/>
-<img src="videos/previews/microssm.gif" width="280"/><br/>
-<sub>Linear-time selective state transitions</sub></td>
-<td align="center"><b>Convolutional Net</b><br/>
+<td align="center"><a href="01-foundations/microconv.py"><b>Convolutional Net</b></a><br/>
 <img src="videos/previews/microconv.gif" width="280"/><br/>
 <sub>Sliding kernels → feature maps</sub></td>
-<td align="center"><b>Diffusion</b><br/>
+<td align="center"><a href="01-foundations/microresnet.py"><b>ResNet</b></a><br/>
+<img src="videos/previews/microresnet.gif" width="280"/><br/>
+<sub>F(x) + x = gradient highway</sub></td>
+</tr>
+<tr>
+<td align="center"><a href="01-foundations/microvit.py"><b>Vision Transformer</b></a><br/>
+<img src="videos/previews/microvit.gif" width="280"/><br/>
+<sub>Image patches as tokens</sub></td>
+<td align="center"><a href="01-foundations/microdiffusion.py"><b>Diffusion</b></a><br/>
 <img src="videos/previews/microdiffusion.gif" width="280"/><br/>
 <sub>Noise → data via iterative denoising</sub></td>
-</tr>
-<tr>
-<td align="center"><b>GAN</b><br/>
-<img src="videos/previews/microgan.gif" width="280"/><br/>
-<sub>Generator vs discriminator minimax</sub></td>
-<td align="center"><b>VAE</b><br/>
+<td align="center"><a href="01-foundations/microvae.py"><b>VAE</b></a><br/>
 <img src="videos/previews/microvae.gif" width="280"/><br/>
 <sub>Encode → sample z → decode</sub></td>
-<td align="center"><b>RNN vs GRU</b><br/>
-<img src="videos/previews/micrornn.gif" width="280"/><br/>
-<sub>Vanishing gradients and gating</sub></td>
 </tr>
 <tr>
-<td align="center"><b>Optimizers</b><br/>
+<td align="center"><a href="01-foundations/microgan.py"><b>GAN</b></a><br/>
+<img src="videos/previews/microgan.gif" width="280"/><br/>
+<sub>Generator vs discriminator minimax</sub></td>
+<td align="center"><a href="01-foundations/microoptimizer.py"><b>Optimizers</b></a><br/>
 <img src="videos/previews/microoptimizer.gif" width="280"/><br/>
 <sub>SGD vs Momentum vs Adam convergence</sub></td>
-<td align="center"><b>Batch Normalization</b><br/>
-<img src="videos/previews/microbatchnorm.gif" width="280"/><br/>
-<sub>Normalize activations → stable training</sub></td>
-<td align="center"><b>Dropout</b><br/>
-<img src="videos/previews/microdropout.gif" width="280"/><br/>
-<sub>Kill neurons → prevent overfitting</sub></td>
+<td></td>
 </tr>
+</table>
+
+**Comparison scripts:** [attention_vs_none.py](01-foundations/attention_vs_none.py) · [rnn_vs_gru_vs_lstm.py](01-foundations/rnn_vs_gru_vs_lstm.py)
+
+</details>
+
+<details>
+<summary><h3>02 — Alignment & Training (10 scripts)</h3></summary>
+<table>
 <tr>
-<td align="center"><b>QLoRA</b><br/>
+<td align="center"><a href="02-alignment/microlora.py"><b>LoRA Fine-tuning</b></a><br/>
+<img src="videos/previews/microlora.gif" width="280"/><br/>
+<sub>Low-rank weight injection</sub></td>
+<td align="center"><a href="02-alignment/microqlora.py"><b>QLoRA</b></a><br/>
 <img src="videos/previews/microqlora.gif" width="280"/><br/>
 <sub>4-bit base + full-precision adapters</sub></td>
-<td align="center"><b>GRPO</b><br/>
+<td align="center"><a href="02-alignment/microdpo.py"><b>DPO Alignment</b></a><br/>
+<img src="videos/previews/microdpo.gif" width="280"/><br/>
+<sub>Preferred vs. rejected → policy update</sub></td>
+</tr>
+<tr>
+<td align="center"><a href="02-alignment/microppo.py"><b>PPO (RLHF)</b></a><br/>
+<img src="videos/previews/microppo.gif" width="280"/><br/>
+<sub>Clipped policy gradient for alignment</sub></td>
+<td align="center"><a href="02-alignment/microgrpo.py"><b>GRPO</b></a><br/>
 <img src="videos/previews/microgrpo.gif" width="280"/><br/>
 <sub>Group-relative rewards, no critic</sub></td>
-<td align="center"><b>REINFORCE</b><br/>
+<td align="center"><a href="02-alignment/microreinforce.py"><b>REINFORCE</b></a><br/>
 <img src="videos/previews/microreinforce.gif" width="280"/><br/>
 <sub>Log P(a) × reward = gradient</sub></td>
 </tr>
 <tr>
-<td align="center"><b>Checkpointing</b><br/>
-<img src="videos/previews/microcheckpoint.gif" width="280"/><br/>
-<sub>O(n) → O(√n) memory via recompute</sub></td>
-<td align="center"><b>PagedAttention</b><br/>
-<img src="videos/previews/micropaged.gif" width="280"/><br/>
-<sub>OS-style paged KV-cache memory</sub></td>
-<td align="center"><b>Model Parallelism</b><br/>
-<img src="videos/previews/microparallel.gif" width="280"/><br/>
-<sub>Tensor + pipeline across devices</sub></td>
+<td align="center"><a href="02-alignment/micromoe.py"><b>Mixture of Experts</b></a><br/>
+<img src="videos/previews/micromoe.gif" width="280"/><br/>
+<sub>Sparse routing to specialist MLPs</sub></td>
+<td align="center"><a href="02-alignment/microbatchnorm.py"><b>Batch Normalization</b></a><br/>
+<img src="videos/previews/microbatchnorm.gif" width="280"/><br/>
+<sub>Normalize activations → stable training</sub></td>
+<td align="center"><a href="02-alignment/microdropout.py"><b>Dropout</b></a><br/>
+<img src="videos/previews/microdropout.gif" width="280"/><br/>
+<sub>Kill neurons → prevent overfitting</sub></td>
 </tr>
 </table>
 
-> All 30 algorithms have animated visualizations. Full 1080p60 videos in [Releases](https://github.com/Mathews-Tom/no-magic/releases).
+**Comparison scripts:** [adam_vs_sgd.py](02-alignment/adam_vs_sgd.py)
+
+</details>
+
+<details>
+<summary><h3>03 — Systems & Inference (13 scripts)</h3></summary>
+<table>
+<tr>
+<td align="center"><a href="03-systems/microattention.py"><b>Attention Mechanism</b></a><br/>
+<img src="videos/previews/microattention.gif" width="280"/><br/>
+<sub>Q·K<sup>T</sup> → softmax → weighted V</sub></td>
+<td align="center"><a href="03-systems/microflash.py"><b>Flash Attention</b></a><br/>
+<img src="videos/previews/microflash.gif" width="280"/><br/>
+<sub>Tiled O(N) memory computation</sub></td>
+<td align="center"><a href="03-systems/microrope.py"><b>RoPE</b></a><br/>
+<img src="videos/previews/microrope.gif" width="280"/><br/>
+<sub>Position via rotation matrices</sub></td>
+</tr>
+<tr>
+<td align="center"><a href="03-systems/microkv.py"><b>KV-Cache</b></a><br/>
+<img src="videos/previews/microkv.gif" width="280"/><br/>
+<sub>Memoize keys/values — stop recomputing</sub></td>
+<td align="center"><a href="03-systems/micropaged.py"><b>PagedAttention</b></a><br/>
+<img src="videos/previews/micropaged.gif" width="280"/><br/>
+<sub>OS-style paged KV-cache memory</sub></td>
+<td align="center"><a href="03-systems/microquant.py"><b>Quantization</b></a><br/>
+<img src="videos/previews/microquant.gif" width="280"/><br/>
+<sub>Float32 → Int8 = 4x compression</sub></td>
+</tr>
+<tr>
+<td align="center"><a href="03-systems/microbeam.py"><b>Beam Search</b></a><br/>
+<img src="videos/previews/microbeam.gif" width="280"/><br/>
+<sub>Tree search with top-k pruning</sub></td>
+<td align="center"><a href="03-systems/microcheckpoint.py"><b>Checkpointing</b></a><br/>
+<img src="videos/previews/microcheckpoint.gif" width="280"/><br/>
+<sub>O(n) → O(√n) memory via recompute</sub></td>
+<td align="center"><a href="03-systems/microparallel.py"><b>Model Parallelism</b></a><br/>
+<img src="videos/previews/microparallel.gif" width="280"/><br/>
+<sub>Tensor + pipeline across devices</sub></td>
+</tr>
+<tr>
+<td align="center"><a href="03-systems/microssm.py"><b>State Space Models</b></a><br/>
+<img src="videos/previews/microssm.gif" width="280"/><br/>
+<sub>Linear-time selective state transitions</sub></td>
+<td align="center"><a href="03-systems/microvectorsearch.py"><b>Vector Search</b></a><br/>
+<img src="videos/previews/microvectorsearch.gif" width="280"/><br/>
+<sub>Exact vs LSH approximate search</sub></td>
+<td align="center"><a href="03-systems/microbm25.py"><b>BM25</b></a><br/>
+<img src="videos/previews/microbm25.gif" width="280"/><br/>
+<sub>TF → TF-IDF → BM25 evolution</sub></td>
+</tr>
+<tr>
+<td align="center"><a href="03-systems/microspeculative.py"><b>Speculative Decoding</b></a><br/>
+<img src="videos/previews/microspeculative.gif" width="280"/><br/>
+<sub>Draft fast, verify once</sub></td>
+<td></td>
+<td></td>
+</tr>
+</table>
+
+</details>
+
+<details>
+<summary><h3>04 — Agents & Planning (2 scripts)</h3></summary>
+<table>
+<tr>
+<td align="center"><a href="04-agents/micromcts.py"><b>Monte Carlo Tree Search</b></a><br/>
+<img src="videos/previews/micromcts.gif" width="280"/><br/>
+<sub>UCB1 tree search + random rollouts</sub></td>
+<td align="center"><a href="04-agents/microreact.py"><b>ReAct Agent</b></a><br/>
+<img src="videos/previews/microreact.gif" width="280"/><br/>
+<sub>Thought → Action → Observation</sub></td>
+<td></td>
+</tr>
+</table>
+
+</details>
+
+> All algorithms have animated visualizations. Full 1080p60 videos in [Releases](https://github.com/Mathews-Tom/no-magic/releases).
 > Video source scenes in [`videos/scenes/`](videos/scenes/) — built with [Manim](https://www.manim.community/).
 
 ### Rendering Videos Locally
@@ -216,25 +282,31 @@ This is not a beginner's introduction to programming. You should be comfortable 
 
 ## What You'll Find Here
 
-The repository is organized into three tiers based on conceptual dependency:
+The repository is organized into four tiers based on conceptual dependency:
 
-### 01 — Foundations (11 scripts)
+### 01 — Foundations (14 scripts)
 
-Core algorithms that form the building blocks of modern AI systems. GPT, RNN, BERT, CNN, GAN, VAE, diffusion, embeddings, tokenization, RAG, and optimizer comparison.
+Core algorithms that form the building blocks of modern AI systems. GPT, RNN, LSTM, BERT, CNN, ResNet, ViT, GAN, VAE, diffusion, embeddings, tokenization, RAG, and optimizer comparison. Includes comparison scripts for attention mechanisms and recurrent architectures.
 
 See [`01-foundations/README.md`](01-foundations/README.md) for the full algorithm list, timing data, and roadmap.
 
-### 02 — Alignment & Training Techniques (9 scripts)
+### 02 — Alignment & Training Techniques (10 scripts)
 
-Methods for steering, fine-tuning, and aligning models after pretraining. LoRA, QLoRA, DPO, PPO, GRPO, REINFORCE, MoE, batch normalization, and dropout/regularization.
+Methods for steering, fine-tuning, and aligning models after pretraining. LoRA, QLoRA, DPO, PPO, GRPO, REINFORCE, MoE, batch normalization, dropout/regularization, and optimizer comparison.
 
 See [`02-alignment/README.md`](02-alignment/README.md) for the full algorithm list, timing data, and roadmap.
 
-### 03 — Systems & Inference (10 scripts)
+### 03 — Systems & Inference (13 scripts)
 
-The engineering that makes models fast, small, and deployable. Attention variants, Flash Attention, KV-cache, PagedAttention, RoPE, quantization, beam search, checkpointing, parallelism, and SSMs.
+The engineering that makes models fast, small, and deployable. Attention variants, Flash Attention, KV-cache, PagedAttention, RoPE, quantization, beam search, checkpointing, parallelism, SSMs, vector search, BM25, and speculative decoding.
 
 See [`03-systems/README.md`](03-systems/README.md) for the full algorithm list, timing data, and roadmap.
+
+### 04 — Agents & Planning (2 scripts)
+
+Autonomous reasoning and decision-making. Monte Carlo Tree Search for strategic planning and ReAct agents for tool-augmented reasoning loops.
+
+See [`04-agents/README.md`](04-agents/README.md) for the full algorithm list, timing data, and roadmap.
 
 ## How to Use This Repo
 
@@ -263,7 +335,11 @@ If you're working through the scripts systematically, this subset builds core co
 microtokenizer.py     → How text becomes numbers
 microembedding.py     → How meaning becomes geometry
 microgpt.py           → How sequences become predictions
+micrornn.py           → How recurrence models sequences
+microlstm.py          → How gated memory solves vanishing gradients
 microbert.py          → How bidirectional context differs from autoregressive
+microconv.py          → How spatial filters extract features
+microvit.py           → How transformers see images
 microbatchnorm.py     → How normalizing activations stabilizes training
 microlora.py          → How fine-tuning works efficiently
 microdpo.py           → How preference alignment works
@@ -272,6 +348,7 @@ microrope.py          → How position gets encoded through rotation
 microquant.py         → How models get compressed
 microflash.py         → How attention gets fast
 microssm.py           → How Mamba models bypass attention entirely
+microreact.py         → How agents reason with tools
 ```
 
 Each tier's README has the full algorithm list with measured run times for that category.
@@ -401,3 +478,5 @@ MIT — use these however you want. Learn from them, teach with them, build on t
 ---
 
 _The constraint is the product. Everything else is just efficiency._
+
+_v2.0.0 — March 2026_
