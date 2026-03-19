@@ -1,0 +1,41 @@
+name: Verify
+
+on:
+  push:
+  pull_request:
+
+jobs:
+  verify:
+    runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        section: [01-foundations, 02-alignment, 03-systems, 04-agents]
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+
+      # Cache datasets downloaded by scripts on first run.
+      # Scripts write data files (names.txt, *.json, etc.) to the repo root.
+      - uses: actions/cache@v4
+        with:
+          path: |
+            names.txt
+            *.json
+            *.txt
+          key: datasets-${{ matrix.section }}-${{ hashFiles('${{ matrix.section }}/*.py') }}
+          restore-keys: |
+            datasets-${{ matrix.section }}-
+
+      - name: Run scripts in ${{ matrix.section }}
+        run: |
+          # `timeout` is a Linux coreutil — intentionally Ubuntu-only; not available on macOS.
+          for script in ${{ matrix.section }}/*.py; do
+            [ -f "$script" ] || continue
+            echo "==> $script"
+            timeout 900 python "$script"
+          done
