@@ -1,9 +1,13 @@
 """Local verification runner for no-magic algorithm scripts.
 
-Discovers scripts across all tier directories, runs each with a 600-second
-timeout, and reports pass/fail/timeout. Exit code 0 means all passed.
+Two modes:
+  --quick   Syntax check, seed presence, and import validation (~2 seconds).
+            Use before committing. This is what CI runs on every push.
+  (default) Full end-to-end execution with 600-second timeout per script.
+            Use before releasing or when you need to confirm runtime behavior.
 
 Usage:
+    python scripts/verify.py --quick                   # fast local gate
     python scripts/verify.py                           # full suite
     python scripts/verify.py --section 01-foundations  # one tier
     python scripts/verify.py microgpt.py               # specific script(s)
@@ -12,6 +16,8 @@ Usage:
 from __future__ import annotations
 
 import argparse
+import py_compile
+import re
 import subprocess
 import sys
 import time
@@ -59,6 +65,79 @@ def filter_by_names(all_scripts: dict[str, list[Path]], names: list[str]) -> dic
         section, path = lookup[name]
         result.setdefault(section, []).append(path)
     return result
+
+
+ALLOWED_MODULES = {
+    "os", "math", "random", "json", "struct", "urllib", "collections",
+    "itertools", "functools", "string", "hashlib", "time", "sys",
+    "argparse", "textwrap", "io", "copy", "abc", "typing",
+}
+
+
+def check_syntax(script_path: Path) -> str | None:
+    """Return error message if syntax is invalid, else None."""
+    try:
+        py_compile.compile(str(script_path), doraise=True)
+        return None
+    except py_compile.PyCompileError as e:
+        return str(e)
+
+
+def check_seed(script_path: Path) -> bool:
+    """Return True if random.seed(42) is present."""
+    text = script_path.read_text()
+    return bool(re.search(r"random\.seed\(42\)", text))
+
+
+def check_imports(script_path: Path) -> list[str]:
+    """Return list of non-stdlib imports found."""
+    text = script_path.read_text()
+    bad = []
+    for m in re.finditer(r"^(?:import|from)\s+([\w.]+)", text, re.MULTILINE):
+        root = m.group(1).split(".")[0]
+        if root not in ALLOWED_MODULES and root != "__future__":
+            bad.append(m.group(1))
+    return bad
+
+
+def run_quick(targets: dict[str, list[Path]]) -> bool:
+    """Run fast checks: syntax, seed, imports. Return True if all pass."""
+    any_failed = False
+    checked = 0
+
+    for section in SECTIONS:
+        if section not in targets:
+            continue
+        for script_path in targets[section]:
+            label = str(script_path.relative_to(REPO_ROOT))
+            checked += 1
+            errors = []
+
+            syntax_err = check_syntax(script_path)
+            if syntax_err:
+                errors.append(f"syntax: {syntax_err}")
+
+            # Only check seed/imports for micro*.py scripts (skip comparison scripts)
+            if script_path.name.startswith("micro"):
+                if not check_seed(script_path):
+                    errors.append("missing random.seed(42)")
+
+                bad_imports = check_imports(script_path)
+                if bad_imports:
+                    errors.append(f"external imports: {', '.join(bad_imports)}")
+
+            if errors:
+                any_failed = True
+                print(f"  FAIL  {label}")
+                for e in errors:
+                    print(f"        {e}")
+            else:
+                print(f"  OK    {label}")
+
+    print()
+    status = "FAIL" if any_failed else "PASS"
+    print(f"Quick check: {checked} scripts — {status}")
+    return not any_failed
 
 
 def run_script(script_path: Path) -> tuple[str, float]:
@@ -124,6 +203,11 @@ def main() -> None:
         description="Run no-magic scripts locally and report pass/fail/timeout."
     )
     parser.add_argument(
+        "--quick",
+        action="store_true",
+        help="Fast gate: syntax, seed, and import checks only (~2 seconds).",
+    )
+    parser.add_argument(
         "--section",
         choices=SECTIONS,
         help="Run only scripts in the given tier directory.",
@@ -149,6 +233,10 @@ def main() -> None:
         targets = filter_by_names(all_scripts, args.scripts)
     else:
         targets = all_scripts
+
+    if args.quick:
+        ok = run_quick(targets)
+        sys.exit(0 if ok else 1)
 
     results: list[tuple[str, str, float]] = []
     any_failed = False
