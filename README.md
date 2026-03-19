@@ -10,6 +10,7 @@
 ![PRs Welcome](https://img.shields.io/badge/PRs-welcome-brightgreen?style=flat-square)
 ![GitHub stars](https://img.shields.io/github/stars/Mathews-Tom/no-magic?style=flat-square)
 ![Last Commit](https://img.shields.io/github/last-commit/Mathews-Tom/no-magic?style=flat-square)
+![CI](https://github.com/Mathews-Tom/no-magic/actions/workflows/verify.yml/badge.svg)
 
 ---
 
@@ -422,6 +423,7 @@ graph LR
   classDef foundations fill:#4a90d9,stroke:#2c5f8a,color:#fff
   classDef alignment fill:#e8834a,stroke:#b35f2e,color:#fff
   classDef systems fill:#5bb55b,stroke:#3a823a,color:#fff
+  classDef agents fill:#9b59b6,stroke:#7d3c98,color:#fff
 
   %% === 01-FOUNDATIONS ===
   subgraph F["01 — Foundations"]
@@ -449,6 +451,12 @@ graph LR
     PPO["PPO"]
     GRPO["GRPO"]
     MOE["MoE"]
+  end
+
+  %% === 04-AGENTS ===
+  subgraph AG["04 — Agents"]
+    MCTS["MCTS"]
+    REACT["ReAct"]
   end
 
   %% === 03-SYSTEMS ===
@@ -510,13 +518,23 @@ graph LR
   %% --- Cross-tier into QLoRA ---
   QUANT --> QLORA
 
+  %% --- Foundations / Alignment → Agents ---
+  REINF --> REACT
+  GPT --> REACT
+
   %% --- Apply styles ---
   class TOK,EMB,OPT,RNN,CONV,GPT,BERT,RAG,DIFF,VAE,GAN foundations
   class BN,DROP,LORA,QLORA,DPO,REINF,PPO,GRPO,MOE alignment
   class ATTN,FLASH,ROPE,KV,PAGED,QUANT,BEAM,CKPT,PAR,SSM,CSSM,DISC,ROOF systems
+  class MCTS,REACT agents
 ```
 
-**Legend:** <span style="color:#4a90d9">Foundations</span> · <span style="color:#e8834a">Alignment</span> · <span style="color:#5bb55b">Systems</span> — Solid arrows = strong prerequisite, dashed arrows = conceptual comparison.
+**Legend:** <span style="color:#4a90d9">Foundations</span> · <span style="color:#e8834a">Alignment</span> · <span style="color:#5bb55b">Systems</span> · <span style="color:#9b59b6">Agents</span> — Solid arrows = strong prerequisite, dashed arrows = conceptual comparison.
+
+## Related Projects
+
+- [micrograd](https://github.com/karpathy/micrograd) — Karpathy's autograd engine. The `Value` class in `microgpt.py` descends from this.
+- [makemore](https://github.com/karpathy/makemore) — Character-level language modeling. `micrornn.py` covers similar ground in a single comparative file.
 
 ## Inspiration & Attribution
 
