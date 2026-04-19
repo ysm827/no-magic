@@ -99,8 +99,8 @@ def inner(a: list[float], b: list[float]) -> float:
 
 
 def gaussian_sample() -> float:
-    """Standard normal via Box-Muller. random.gauss(0, 1) also works but explicit
-    here to keep the only-stdlib dependency surface visible."""
+    """Return one draw from the standard normal N(0, 1). Named wrapper so callers
+    read as 'gaussian_sample()' rather than 'random.gauss(0.0, 1.0)'."""
     return random.gauss(0.0, 1.0)
 
 
@@ -119,8 +119,8 @@ def random_rotation(dim: int) -> list[list[float]]:
         columns[k] = columns[k] / ||columns[k]||
     where g_k is the k-th standard-Gaussian column before orthonormalization.
     """
-    # Generate random Gaussian columns. We store them as rows of `columns_as_rows`
-    # (easier indexing in Python) and transpose at the end.
+    # Generate a D-by-D matrix of i.i.d. Gaussians. Stored row-major; we extract
+    # columns on demand via `raw[i][k]` for k in the Gram-Schmidt loop below.
     raw = [[gaussian_sample() for _ in range(dim)] for _ in range(dim)]
 
     # Gram-Schmidt in place, column by column.
@@ -146,13 +146,11 @@ def orthogonality_error(R: list[list[float]]) -> float:
     """Return max |R^T R - I|_ij. Should be below ~1e-10 for any correct rotation."""
     dim = len(R)
     Rt = transpose(R)
-    worst = 0.0
-    for i in range(dim):
-        for j in range(dim):
-            dot = sum(Rt[i][k] * R[k][j] for k in range(dim))
-            expected = 1.0 if i == j else 0.0
-            worst = max(worst, abs(dot - expected))
-    return worst
+    return max(
+        abs(sum(Rt[i][k] * R[k][j] for k in range(dim)) - (1.0 if i == j else 0.0))
+        for i in range(dim)
+        for j in range(dim)
+    )
 
 
 # === SCALAR QUANTIZERS ===
@@ -278,10 +276,10 @@ def sample_name_embeddings(names: list[str], count: int, dim: int) -> list[list[
         sparse_counts: dict[int, float] = {}
         padded = "." + name + "."
         for a, b in zip(padded, padded[1:]):
-            bigram = a + b
-            if bigram in bigram_idx:
-                idx = bigram_idx[bigram]
-                sparse_counts[idx] = sparse_counts.get(idx, 0.0) + 1.0
+            idx = bigram_idx.get(a + b)
+            if idx is None:
+                continue
+            sparse_counts[idx] = sparse_counts.get(idx, 0.0) + 1.0
         if not sparse_counts:
             continue
         # Sparse matvec: only sum over non-zero entries of sparse_counts.
@@ -330,22 +328,9 @@ def inner_product_mse(
     for _ in range(pair_count):
         i = random.randrange(n)
         j = random.randrange(n)
-        true_ip = inner(originals[i], originals[j])
-        approx_ip = inner(approximations[i], approximations[j])
-        diff = true_ip - approx_ip
-        total += diff * diff
+        err = inner(originals[i], originals[j]) - inner(approximations[i], approximations[j])
+        total += err * err
     return total / pair_count
-
-
-def reconstruction_mse(originals: list[list[float]], approximations: list[list[float]]) -> float:
-    """Average L2 reconstruction error per coordinate. Secondary metric."""
-    total = 0.0
-    coord_count = 0
-    for x, x_hat in zip(originals, approximations):
-        for a, b in zip(x, x_hat):
-            total += (a - b) ** 2
-            coord_count += 1
-    return total / coord_count if coord_count else 0.0
 
 
 # === RATE-DISTORTION BENCHMARK ===
