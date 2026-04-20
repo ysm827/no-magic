@@ -291,7 +291,7 @@
     "name": "microturboquant",
     "display": "Turboquant",
     "thesis": "Why rotating a vector before quantizing it works -- random rotation makes coordinates",
-    "lines": 364
+    "lines": 351
   },
   {
     "tier": "03-systems",
